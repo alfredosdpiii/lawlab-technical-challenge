@@ -10,18 +10,13 @@ import {
   Menu,
   Tabs,
   Burger,
-  rem,
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "@/components/nav/navbar.module.css";
-
-const user = {
-  name: "Jane Spoonfighter",
-  email: "janspoon@fighter.dev",
-  image:
-    "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png",
-};
+import Link from "next/link";
+import { LogIn } from "lucide-react";
+import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
 
 const tabs = [
   "Home",
@@ -34,10 +29,15 @@ const tabs = [
   "Helpdesk",
 ];
 
+interface NavbarProps {
+  user?: UserProfile;
+}
+
 export default function Navbar() {
   const theme = useMantineTheme();
   const [opened, { toggle }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
+  const { user, error, isLoading } = useUser();
 
   const items = tabs.map((tab) => (
     <Tabs.Tab value={tab} key={tab}>
@@ -53,34 +53,40 @@ export default function Navbar() {
 
           <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
 
-          <Menu
-            width={260}
-            position="bottom-end"
-            transitionProps={{ transition: "pop-top-right" }}
-            onClose={() => setUserMenuOpened(false)}
-            onOpen={() => setUserMenuOpened(true)}
-            withinPortal
-          >
-            <Menu.Target>
-              <UnstyledButton
-                className={cx(classes.user, {
-                  [classes.userActive]: userMenuOpened,
-                })}
-              >
-                <Group gap={7}>
-                  <Avatar
-                    src={user.image}
-                    alt={user.name}
-                    radius="xl"
-                    size={20}
-                  />
-                  <Text fw={500} size="sm" lh={1} mr={3}>
-                    {user.name}
-                  </Text>
-                </Group>
-              </UnstyledButton>
-            </Menu.Target>
-          </Menu>
+          {user ? (
+            <Menu
+              width={260}
+              position="bottom-end"
+              transitionProps={{ transition: "pop-top-right" }}
+              onClose={() => setUserMenuOpened(false)}
+              onOpen={() => setUserMenuOpened(true)}
+              withinPortal
+            >
+              <Menu.Target>
+                <UnstyledButton
+                  className={cx(classes.user, {
+                    [classes.userActive]: userMenuOpened,
+                  })}
+                >
+                  <Group gap={7}>
+                    <Avatar
+                      src={user.picture}
+                      alt={user.name || ""}
+                      radius="xl"
+                      size={20}
+                    />
+                    <Text fw={500} size="sm" lh={1} mr={3}>
+                      {user.name}
+                    </Text>
+                  </Group>
+                </UnstyledButton>
+              </Menu.Target>
+            </Menu>
+          ) : (
+            <Link href={"/api/auth/login"}>
+              <LogIn />
+            </Link>
+          )}
         </Group>
       </Container>
       <Container size="md">
