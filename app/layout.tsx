@@ -1,6 +1,7 @@
 import "@mantine/core/styles.css";
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
+import NavbarWrapper from "@/components/nav/navbar-wrapper";
 
 export const metadata = {
   title: "Lawlab Technical Challenge",
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: any }) {
       </head>
       <body>
         <MantineProvider defaultColorScheme="auto">
+          <NavbarWrapper />
           {children}
         </MantineProvider>
       </body>
