@@ -11,7 +11,7 @@ export default function RootLayout({ children }: { children: any }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <ColorSchemeScript />
+        <ColorSchemeScript defaultColorScheme="auto" />
         <link rel="shortcut icon" href="/favicon.svg" />
         <meta
           name="viewport"
