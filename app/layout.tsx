@@ -1,7 +1,8 @@
 import "@mantine/core/styles.css";
 import React from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
-import NavbarWrapper from "@/components/nav/navbar-wrapper";
+import { UserProvider } from "@auth0/nextjs-auth0/client";
+import Navbar from "@/components/nav/navbar";
 
 export const metadata = {
   title: "Lawlab Technical Challenge",
@@ -19,12 +20,14 @@ export default function RootLayout({ children }: { children: any }) {
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
       </head>
-      <body>
-        <MantineProvider defaultColorScheme="auto">
-          <NavbarWrapper />
-          {children}
-        </MantineProvider>
-      </body>
+      <UserProvider>
+        <body>
+          <MantineProvider defaultColorScheme="auto">
+            <Navbar />
+            {children}
+          </MantineProvider>
+        </body>
+      </UserProvider>
     </html>
   );
 }
