@@ -92,6 +92,7 @@ export default function Navbar() {
           onClose={() => setUserMenuOpened(false)}
           onOpen={() => setUserMenuOpened(true)}
           withinPortal
+          visibleFrom="sm"
         >
           <Menu.Target>
             <UnstyledButton
@@ -131,7 +132,10 @@ export default function Navbar() {
     }
 
     return (
-      <UnstyledButton onClick={() => router.push("/api/auth/login")}>
+      <UnstyledButton
+        onClick={() => router.push("/api/auth/login")}
+        visibleFrom="sm"
+      >
         <LogIn />
       </UnstyledButton>
     );
@@ -176,7 +180,50 @@ export default function Navbar() {
         hiddenFrom="sm"
         zIndex={1000}
       >
-        <Stack>{mobileItems}</Stack>
+        <Stack>
+          {mobileItems}
+          {user ? (
+            <>
+              <UnstyledButton
+                className={classes.mobileLink}
+                onClick={() => {
+                  router.push("/profile");
+                  close();
+                }}
+              >
+                <Group gap={6}>
+                  <User size={14} />
+                  <Text>Profile</Text>
+                </Group>
+              </UnstyledButton>
+              <UnstyledButton
+                className={classes.mobileLink}
+                onClick={() => {
+                  router.push("/api/auth/logout");
+                  close();
+                }}
+              >
+                <Group gap={6}>
+                  <LogOut size={14} />
+                  <Text>Logout</Text>
+                </Group>
+              </UnstyledButton>
+            </>
+          ) : (
+            <UnstyledButton
+              className={classes.mobileLink}
+              onClick={() => {
+                router.push("/api/auth/login");
+                close();
+              }}
+            >
+              <Group gap={6}>
+                <LogIn size={14} />
+                <Text>Login</Text>
+              </Group>
+            </UnstyledButton>
+          )}
+        </Stack>
       </Drawer>
     </>
   );
