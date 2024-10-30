@@ -1,4 +1,5 @@
 "use server";
+import { Task } from "@/types/types";
 
 // This is how I would filter
 // if the api did not have it built in
@@ -14,7 +15,7 @@
 
 // GET tasks
 // filter in url params
-export async function getTasks() {
+export async function getTasks(): Promise<Task[]> {
   const response = await fetch(
     "https://jsonplaceholder.typicode.com/todos?userId=1",
   );
@@ -25,25 +26,41 @@ export async function getTasks() {
 }
 
 // POST create task
-export async function createTask() {
-  const response = fetch("https://jsonplaceholder.typicode.com/todos", {
+export async function createTask(title: string): Promise<Task> {
+  const response = await fetch("https://jsonplaceholder.typicode.com/todos", {
     method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      title: "foo",
-      body: "bar",
+      title,
+      completed: false,
       userId: 1,
     }),
   });
+  const json = await response.json();
+  console.log(json);
+  return json;
 }
 
 // PATCH edit task
-export async function patchTask() {
-  const response = fetch("https://jsonplaceholder.typicode.com/todos", {
-    method: "POST",
-    body: JSON.stringify({
-      title: "foo",
-      body: "bar",
-      userId: 1,
-    }),
+export async function toggleTask(
+  id: number,
+  completed: boolean,
+): Promise<Task> {
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/todos/${id}`,
+    {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ completed }),
+    },
+  );
+  const json = await response.json();
+  return json;
+}
+
+// DELETE delete task
+export async function deleteTask(id: number): Promise<void> {
+  await fetch(`https://jsonplaceholder.typicode.com/todos/${id}`, {
+    method: "DELETE",
   });
 }
