@@ -20,16 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { LogIn, ScrollText, User, LogOut } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-const tabs = [
-  "Home",
-  "Orders",
-  "Education",
-  "Community",
-  "Forums",
-  "Support",
-  "Account",
-  "Helpdesk",
-];
+const tabs = ["Home", "Helpdesk"];
 
 export default function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
@@ -39,6 +30,7 @@ export default function Navbar() {
   const router = useRouter();
 
   const getActiveTab = () => {
+    if (pathname === "/") return "Home";
     const path = pathname.substring(1);
     const matchingTab = tabs.find(
       (tab) => tab.toLowerCase() === path.toLowerCase(),
@@ -50,7 +42,11 @@ export default function Navbar() {
     <Tabs.Tab
       value={tab}
       key={tab}
-      onClick={() => router.push(`/${tab.toLowerCase()}`)}
+      onClick={() =>
+        router.push(
+          tab.toLowerCase() === "home" ? "/" : `/${tab.toLowerCase()}`,
+        )
+      }
       className={classes.tabLink}
     >
       {tab}
@@ -61,10 +57,15 @@ export default function Navbar() {
     <UnstyledButton
       key={tab}
       className={cx(classes.mobileLink, {
-        [classes.mobileLinkActive]: `/${tab.toLowerCase()}` === pathname,
+        [classes.mobileLinkActive]:
+          tab.toLowerCase() === "home"
+            ? pathname === "/"
+            : `/${tab.toLowerCase()}` === pathname,
       })}
       onClick={() => {
-        router.push(`/${tab.toLowerCase()}`);
+        router.push(
+          tab.toLowerCase() === "home" ? "/" : `/${tab.toLowerCase()}`,
+        );
         close();
       }}
     >
