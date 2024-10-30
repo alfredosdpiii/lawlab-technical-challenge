@@ -44,6 +44,9 @@ yarn run dev
 - I definitely want to overengineer this and use react-query to show optimistic updates
 - "This feature could be a button that, when clicked, fetches a suggested task title." - this is too easy
   I want to use the new `toolCalling` feature [source](https://youtu.be/zsHYbiPQR98?si=wMGEAEO1yv-MS6cn)
+![image](https://github.com/user-attachments/assets/64893b61-5fa9-4d06-81e3-40c31379299c)
+![image](https://github.com/user-attachments/assets/52233521-4bde-4a03-90f5-49527e1578f3)
+
 
 ## Assumptions
 
