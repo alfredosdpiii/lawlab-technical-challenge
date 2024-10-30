@@ -1,3 +1,5 @@
+"use server";
+
 export default async function getTasks() {
   const response = await fetch("https://jsonplaceholder.typicode.com/todos");
 
