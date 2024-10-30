@@ -44,9 +44,14 @@ yarn run dev
 - I definitely want to overengineer this and use react-query to show optimistic updates
 - "This feature could be a button that, when clicked, fetches a suggested task title." - this is too easy
   I want to use the new `toolCalling` feature [source](https://youtu.be/zsHYbiPQR98?si=wMGEAEO1yv-MS6cn)
-![image](https://github.com/user-attachments/assets/64893b61-5fa9-4d06-81e3-40c31379299c)
-![image](https://github.com/user-attachments/assets/52233521-4bde-4a03-90f5-49527e1578f3)
+  ![image](https://github.com/user-attachments/assets/64893b61-5fa9-4d06-81e3-40c31379299c)
+  ![image](https://github.com/user-attachments/assets/52233521-4bde-4a03-90f5-49527e1578f3)
 
+### tool use for chatgpt:
+
+- you can say "get tasks" and it will get tasks from server action
+- you can say "create task taskName" and it will create the task for you through server actions
+- you can say "update task taskName" and it will update the task for you through server actions
 
 ## Assumptions
 
