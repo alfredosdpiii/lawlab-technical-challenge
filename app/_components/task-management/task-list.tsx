@@ -2,9 +2,15 @@
 import React, { useState } from "react";
 import { Box, TextInput, Button, Group, Stack } from "@mantine/core";
 import { TaskItem } from "@/components/task-management/task-item";
-import { Task, TaskListProps } from "@/types/types";
+import { Task } from "@/types/types";
+import { useQuery } from "@tanstack/react-query";
+import { getTasks } from "@/actions/task-actions";
 
-function TaskList({ tasks }: { tasks: TaskListProps }) {
+function TaskList() {
+  const { data: tasks } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: async () => await getTasks(),
+  });
   const [newTask, setNewTask] = useState("");
 
   const addTask = () => {
