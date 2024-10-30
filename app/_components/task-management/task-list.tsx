@@ -83,6 +83,35 @@ function TaskList() {
       }
     },
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: number) => {
+      setDeletingIds((prev) => [...prev, id]);
+      const response = await deleteTask(id);
+      setDeletingIds((prev) => prev.filter((deleteId) => deleteId !== id));
+      return response;
+    },
+    onMutate: async (id: number) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]) ?? [];
+
+      queryClient.setQueryData<Task[]>(["tasks"], (old) =>
+        old?.filter((task) => task.id !== id),
+      );
+
+      return { previousTasks };
+    },
+    onError: (
+      _err,
+      _variables,
+      context: { previousTasks: Task[] } | undefined,
+    ) => {
+      if (context) {
+        queryClient.setQueryData(["tasks"], context.previousTasks);
+      }
+    },
+  });
+
   };
   const toggleTask = () => {
     return;
