@@ -17,9 +17,9 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import classes from "@/components/nav/navbar.module.css";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { LogIn, ScrollText } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { usePathname } from "next/navigation";
 
 const tabs = [
   "Home",
@@ -37,6 +37,7 @@ export default function Navbar() {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const { user, isLoading } = useUser();
   const pathname = usePathname();
+  const router = useRouter();
 
   const getActiveTab = () => {
     const path = pathname.substring(1);
@@ -47,24 +48,29 @@ export default function Navbar() {
   };
 
   const items = tabs.map((tab) => (
-    <Link href={`/${tab.toLowerCase()}`} key={tab} onClick={close}>
-      <Tabs.Tab value={tab} component="div">
-        {tab}
-      </Tabs.Tab>
-    </Link>
+    <Tabs.Tab
+      value={tab}
+      key={tab}
+      onClick={() => router.push(`/${tab.toLowerCase()}`)}
+      className={classes.tabLink}
+    >
+      {tab}
+    </Tabs.Tab>
   ));
 
   const mobileItems = tabs.map((tab) => (
-    <Link
-      href={`/${tab.toLowerCase()}`}
+    <UnstyledButton
       key={tab}
       className={cx(classes.mobileLink, {
         [classes.mobileLinkActive]: `/${tab.toLowerCase()}` === pathname,
       })}
-      onClick={close}
+      onClick={() => {
+        router.push(`/${tab.toLowerCase()}`);
+        close();
+      }}
     >
       {tab}
-    </Link>
+    </UnstyledButton>
   ));
 
   const renderUserSection = () => {
@@ -107,10 +113,10 @@ export default function Navbar() {
             </UnstyledButton>
           </Menu.Target>
           <Menu.Dropdown>
-            <Menu.Item component={Link} href="/profile">
+            <Menu.Item onClick={() => router.push("/profile")}>
               Profile
             </Menu.Item>
-            <Menu.Item component={Link} href="/api/auth/logout">
+            <Menu.Item onClick={() => router.push("/api/auth/logout")}>
               Logout
             </Menu.Item>
           </Menu.Dropdown>
@@ -119,9 +125,9 @@ export default function Navbar() {
     }
 
     return (
-      <Link href="/api/auth/login">
+      <UnstyledButton onClick={() => router.push("/api/auth/login")}>
         <LogIn />
-      </Link>
+      </UnstyledButton>
     );
   };
 
