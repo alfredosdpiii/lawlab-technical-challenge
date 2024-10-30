@@ -105,7 +105,7 @@ export default function HelpDesk() {
                       p="xs"
                       radius="md"
                       withBorder
-                      style={{ maxWidth: "80%" }}
+                      style={{ maxWidth: "100%" }}
                       bg={message.role === "user" ? "blue" : undefined}
                     >
                       <Text
