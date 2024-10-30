@@ -112,13 +112,14 @@ function TaskList() {
     },
   });
 
+  const addTask = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newTask.trim()) {
+      createMutation.mutate(newTask);
+      setNewTask("");
+    }
   };
-  const toggleTask = () => {
-    return;
-  };
-  const deleteTask = () => {
-    return;
-  };
+
   return (
     <Box maw={400} mx="auto" p="md">
       <form onSubmit={addTask}>
@@ -129,7 +130,9 @@ function TaskList() {
             onChange={(e) => setNewTask(e.target.value)}
             style={{ flex: 1 }}
           />
-          <Button type="submit">Add</Button>
+          <Button type="submit" loading={createMutation.isPending}>
+            Add
+          </Button>
         </Group>
       </form>
 
