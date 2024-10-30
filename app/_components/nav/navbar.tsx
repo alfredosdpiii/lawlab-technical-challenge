@@ -10,13 +10,14 @@ import {
   Menu,
   Tabs,
   Burger,
-  useMantineTheme,
+  Drawer,
+  Stack,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "@/components/nav/navbar.module.css";
 import Link from "next/link";
 import { LogIn } from "lucide-react";
-import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
+import { useUser } from "@auth0/nextjs-auth0/client";
 import { ScrollText } from "lucide-react";
 
 const tabs = [
@@ -30,80 +31,111 @@ const tabs = [
   "Helpdesk",
 ];
 
-interface NavbarProps {
-  user?: UserProfile;
-}
-
 export default function Navbar() {
-  const theme = useMantineTheme();
-  const [opened, { toggle }] = useDisclosure(false);
+  const [opened, { toggle, close }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  const { user, error, isLoading } = useUser();
+  const { user } = useUser();
 
   const items = tabs.map((tab) => (
-    <Tabs.Tab value={tab} key={tab}>
+    <Link href={`/${tab.toLowerCase()}`} key={tab} onClick={close}>
+      <Tabs.Tab value={tab}>{tab}</Tabs.Tab>
+    </Link>
+  ));
+
+  const mobileItems = tabs.map((tab) => (
+    <Link
+      href={`/${tab.toLowerCase()}`}
+      key={tab}
+      className={classes.mobileLink}
+      onClick={close}
+    >
       {tab}
-    </Tabs.Tab>
+    </Link>
   ));
 
   return (
-    <div className={classes.header}>
-      <Container className={classes.mainSection} size="md">
-        <Group justify="space-between">
-
-          <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+    <>
+      <div className={classes.header}>
+        <Container className={classes.mainSection} size="md">
+          <Group justify="space-between">
             <ScrollText size={28} />
+            <Burger
+              opened={opened}
+              onClick={toggle}
+              hiddenFrom="sm"
+              size="sm"
+              aria-label="Toggle navigation"
+            />
+            {user ? (
+              <Menu
+                width={260}
+                position="bottom-end"
+                transitionProps={{ transition: "pop-top-right" }}
+                onClose={() => setUserMenuOpened(false)}
+                onOpen={() => setUserMenuOpened(true)}
+                withinPortal
+              >
+                <Menu.Target>
+                  <UnstyledButton
+                    className={cx(classes.user, {
+                      [classes.userActive]: userMenuOpened,
+                    })}
+                  >
+                    <Group gap={7}>
+                      <Avatar
+                        src={user.picture}
+                        alt={user.name || ""}
+                        radius="xl"
+                        size={20}
+                      />
+                      <Text fw={500} size="sm" lh={1} mr={3}>
+                        {user.name}
+                      </Text>
+                    </Group>
+                  </UnstyledButton>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item component={Link} href="/profile">
+                    Profile
+                  </Menu.Item>
+                  <Menu.Item component={Link} href="/api/auth/logout">
+                    Logout
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            ) : (
+              <Link href="/api/auth/login">
+                <LogIn />
+              </Link>
+            )}
+          </Group>
+        </Container>
+        <Container size="md">
+          <Tabs
+            defaultValue="Home"
+            variant="outline"
+            visibleFrom="sm"
+            classNames={{
+              root: classes.tabs,
+              list: classes.tabsList,
+              tab: classes.tab,
+            }}
+          >
+            <Tabs.List>{items}</Tabs.List>
+          </Tabs>
+        </Container>
+      </div>
 
-          {user ? (
-            <Menu
-              width={260}
-              position="bottom-end"
-              transitionProps={{ transition: "pop-top-right" }}
-              onClose={() => setUserMenuOpened(false)}
-              onOpen={() => setUserMenuOpened(true)}
-              withinPortal
-            >
-              <Menu.Target>
-                <UnstyledButton
-                  className={cx(classes.user, {
-                    [classes.userActive]: userMenuOpened,
-                  })}
-                >
-                  <Group gap={7}>
-                    <Avatar
-                      src={user.picture}
-                      alt={user.name || ""}
-                      radius="xl"
-                      size={20}
-                    />
-                    <Text fw={500} size="sm" lh={1} mr={3}>
-                      {user.name}
-                    </Text>
-                  </Group>
-                </UnstyledButton>
-              </Menu.Target>
-            </Menu>
-          ) : (
-            <Link href={"/api/auth/login"}>
-              <LogIn />
-            </Link>
-          )}
-        </Group>
-      </Container>
-      <Container size="md">
-        <Tabs
-          defaultValue="Home"
-          variant="outline"
-          visibleFrom="sm"
-          classNames={{
-            root: classes.tabs,
-            list: classes.tabsList,
-            tab: classes.tab,
-          }}
-        >
-          <Tabs.List>{items}</Tabs.List>
-        </Tabs>
-      </Container>
-    </div>
+      <Drawer
+        opened={opened}
+        onClose={close}
+        size="100%"
+        padding="md"
+        hiddenFrom="sm"
+        zIndex={1000}
+      >
+        <Stack>{mobileItems}</Stack>
+      </Drawer>
+    </>
   );
 }
