@@ -38,8 +38,9 @@ export const TaskItem = ({
         color="red"
         onClick={() => onDelete(task.id)}
         variant="subtle"
+        disabled={isDeleting}
       >
-        <Trash size={12} />
+        {isDeleting ? <Loader size="xs" /> : <Trash size={12} />}
       </ActionIcon>
     </Group>
   </Paper>
