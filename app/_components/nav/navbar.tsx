@@ -16,7 +16,6 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import classes from "@/components/nav/navbar.module.css";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LogIn, ScrollText } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
