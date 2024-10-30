@@ -29,6 +29,16 @@
 
 - [source](https://nextjs.org/docs/app/building-your-application/routing/colocation)
 
+## running the project:
+
+- install dependencies with `yarn install` or just `yarn`
+
+- run project:
+
+```
+yarn run dev
+```
+
 ## Personal goals:
 
 - I definitely want to overengineer this and use react-query to show optimistic updates
