@@ -51,6 +51,38 @@ function TaskList() {
       }
     },
   });
+
+  const toggleMutation = useMutation({
+    mutationFn: async ({ id, completed }: ToggleVariables) => {
+      setTogglingIds((prev) => [...prev, id]);
+      const response = await toggleTask(id, completed);
+      setTogglingIds((prev) => prev.filter((toggleId) => toggleId !== id));
+      return response;
+    },
+    onMutate: async (variables: ToggleVariables) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]) ?? [];
+
+      queryClient.setQueryData<Task[]>(["tasks"], (old) =>
+        old?.map((task) =>
+          task.id === variables.id
+            ? { ...task, completed: variables.completed }
+            : task,
+        ),
+      );
+
+      return { previousTasks };
+    },
+    onError: (
+      _err,
+      _variables,
+      context: { previousTasks: Task[] } | undefined,
+    ) => {
+      if (context) {
+        queryClient.setQueryData(["tasks"], context.previousTasks);
+      }
+    },
+  });
   };
   const toggleTask = () => {
     return;
