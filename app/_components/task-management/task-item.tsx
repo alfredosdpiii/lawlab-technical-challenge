@@ -11,13 +11,19 @@ export const TaskItem = ({
   isDeleting = false,
 }: TaskItemProps) => (
   <Paper shadow="xs" p="md" withBorder>
-    <Group justify="space-between">
-      <Group>
-        <Checkbox
-          checked={task.completed}
-          onChange={() => onToggle(task.id)}
-          aria-label="Toggle task"
-        />
+    <Group justify="space-between" align="start">
+      <Group align="start" style={{ flex: 1 }}>
+        <Box pt={2}>
+          {isToggling ? (
+            <Loader size="xs" />
+          ) : (
+            <Checkbox
+              checked={task.completed}
+              onChange={() => onToggle(task.id)}
+              aria-label="Toggle task"
+            />
+          )}
+        </Box>
         <Box
           style={{
             textDecoration: task.completed ? "line-through" : "none",
