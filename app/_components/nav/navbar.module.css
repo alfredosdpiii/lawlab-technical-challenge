@@ -78,3 +78,21 @@
     border-bottom-color: transparent;
   }
 }
+
+.mobileLink {
+  display: block;
+  padding: var(--mantine-spacing-md);
+  text-decoration: none;
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+  font-weight: 500;
+  font-size: var(--mantine-font-size-sm);
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 100ms ease;
+
+  &:hover {
+    background-color: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-dark-6)
+    );
+  }
+}
