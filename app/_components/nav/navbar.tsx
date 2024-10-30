@@ -20,7 +20,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { LogIn, ScrollText, User, LogOut } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
-const tabs = ["Home", "Helpdesk"];
+const tabs = ["Home", "Tasks", "Helpdesk"];
 
 export default function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
