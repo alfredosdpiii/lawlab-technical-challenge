@@ -3,18 +3,54 @@ import React, { useState } from "react";
 import { Box, TextInput, Button, Group, Stack } from "@mantine/core";
 import { TaskItem } from "@/components/task-management/task-item";
 import { Task } from "@/types/types";
-import { useQuery } from "@tanstack/react-query";
-import { getTasks } from "@/actions/task-actions";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getTasks,
+  createTask,
+  toggleTask,
+  deleteTask,
+} from "@/actions/task-actions";
 
 function TaskList() {
-  const { data: tasks } = useQuery({
-    queryKey: ["tasks"],
-    queryFn: async () => await getTasks(),
-  });
+  const queryClient = useQueryClient();
   const [newTask, setNewTask] = useState("");
+  const [togglingIds, setTogglingIds] = useState<number[]>([]);
+  const [deletingIds, setDeletingIds] = useState<number[]>([]);
 
-  const addTask = () => {
-    return;
+  const { data: tasks = [] } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: getTasks,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: createTask,
+    onMutate: async (title) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]) ?? [];
+
+      const optimisticTask: Task = {
+        id: Date.now(),
+        title,
+        completed: false,
+        userId: 1,
+      };
+
+      queryClient.setQueryData<Task[]>(
+        ["tasks"],
+        [optimisticTask, ...previousTasks],
+      );
+      return { previousTasks };
+    },
+    onError: (
+      _err,
+      _newTodo,
+      context: { previousTasks: Task[] } | undefined,
+    ) => {
+      if (context) {
+        queryClient.setQueryData(["tasks"], context.previousTasks);
+      }
+    },
+  });
   };
   const toggleTask = () => {
     return;
