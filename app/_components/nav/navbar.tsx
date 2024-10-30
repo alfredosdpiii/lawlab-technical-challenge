@@ -17,7 +17,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import classes from "@/components/nav/navbar.module.css";
 import { usePathname, useRouter } from "next/navigation";
-import { LogIn, ScrollText } from "lucide-react";
+import { LogIn, ScrollText, User, LogOut } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 const tabs = [
@@ -85,7 +85,7 @@ export default function Navbar() {
     if (user) {
       return (
         <Menu
-          width={260}
+          width={110}
           position="bottom-end"
           transitionProps={{ transition: "pop-top-right" }}
           onClose={() => setUserMenuOpened(false)}
@@ -113,10 +113,16 @@ export default function Navbar() {
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item onClick={() => router.push("/profile")}>
-              Profile
+              <Group gap={6} justify="flex-start">
+                <User size={14} />
+                <Text size="sm">Profile</Text>
+              </Group>
             </Menu.Item>
             <Menu.Item onClick={() => router.push("/api/auth/logout")}>
-              Logout
+              <Group gap={6} justify="flex-start">
+                <LogOut size={14} />
+                <Text size="sm">Logout</Text>
+              </Group>
             </Menu.Item>
           </Menu.Dropdown>
         </Menu>
