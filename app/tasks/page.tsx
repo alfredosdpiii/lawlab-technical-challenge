@@ -1,13 +1,22 @@
-import getTasks from "@/actions/task-actions";
+import { getTasks } from "@/actions/task-actions";
 import TaskList from "@/components/task-management/task-list";
 import React from "react";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 
 async function Tasks() {
-  const tasks = await getTasks();
+  const queryClient = new QueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: ["tasks"],
+    queryFn: async () => await getTasks(),
+  });
   return (
-    <div>
-      <TaskList tasks={tasks} />
-    </div>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <TaskList />
+    </HydrationBoundary>
   );
 }
 
