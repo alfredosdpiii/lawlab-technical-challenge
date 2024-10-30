@@ -1,17 +1,15 @@
 import React from "react";
-import { Box, Checkbox, Paper, Group, ActionIcon } from "@mantine/core";
+import { Box, Checkbox, Paper, Group, ActionIcon, Loader } from "@mantine/core";
 import { Trash } from "lucide-react";
-import { Task } from "@/types/types";
+import { TaskItemProps } from "@/types/types";
 
 export const TaskItem = ({
   task,
   onToggle,
   onDelete,
-}: {
-  task: Task;
-  onToggle: any;
-  onDelete: any;
-}) => (
+  isToggling = false,
+  isDeleting = false,
+}: TaskItemProps) => (
   <Paper shadow="xs" p="md" withBorder>
     <Group justify="space-between">
       <Group>
