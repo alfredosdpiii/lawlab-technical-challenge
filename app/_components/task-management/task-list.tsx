@@ -9,6 +9,7 @@ import {
   createTask,
   toggleTask,
   deleteTask,
+  editTask,
 } from "@/actions/task-actions";
 
 interface ToggleVariables {
@@ -16,11 +17,17 @@ interface ToggleVariables {
   completed: boolean;
 }
 
+interface EditVariables {
+  id: number;
+  title: string;
+}
+
 function TaskList() {
   const queryClient = useQueryClient();
   const [newTask, setNewTask] = useState("");
   const [togglingIds, setTogglingIds] = useState<number[]>([]);
   const [deletingIds, setDeletingIds] = useState<number[]>([]);
+  const [editingIds, setEditingIds] = useState<number[]>([]);
 
   const { data: tasks = [] } = useQuery({
     queryKey: ["tasks"],
@@ -117,6 +124,36 @@ function TaskList() {
     },
   });
 
+  const editMutation = useMutation({
+    mutationFn: async ({ id, title }: EditVariables) => {
+      setEditingIds((prev) => [...prev, id]);
+      const response = await editTask(id, title);
+      setEditingIds((prev) => prev.filter((editId) => editId !== id));
+      return response;
+    },
+    onMutate: async (variables: EditVariables) => {
+      await queryClient.cancelQueries({ queryKey: ["tasks"] });
+      const previousTasks = queryClient.getQueryData<Task[]>(["tasks"]) ?? [];
+
+      queryClient.setQueryData<Task[]>(["tasks"], (old) =>
+        old?.map((task) =>
+          task.id === variables.id ? { ...task, title: variables.title } : task,
+        ),
+      );
+
+      return { previousTasks };
+    },
+    onError: (
+      _err,
+      _variables,
+      context: { previousTasks: Task[] } | undefined,
+    ) => {
+      if (context) {
+        queryClient.setQueryData(["tasks"], context.previousTasks);
+      }
+    },
+  });
+
   const addTask = (e: React.FormEvent) => {
     e.preventDefault();
     if (newTask.trim()) {
@@ -152,8 +189,10 @@ function TaskList() {
               })
             }
             onDelete={() => deleteMutation.mutate(task.id)}
+            onEdit={(title) => editMutation.mutate({ id: task.id, title })}
             isToggling={togglingIds.includes(task.id)}
             isDeleting={deletingIds.includes(task.id)}
+            isEditing={editingIds.includes(task.id)}
           />
         ))}
       </Stack>

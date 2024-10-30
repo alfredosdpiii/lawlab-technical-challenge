@@ -73,3 +73,16 @@ export async function deleteTask(id: number): Promise<void> {
     headers,
   });
 }
+
+export async function editTask(id: number, title: string): Promise<Task> {
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/todos/${id}`,
+    {
+      method: "PATCH",
+      headers,
+      body: JSON.stringify({ title }),
+    },
+  );
+  const json = await response.json();
+  return json;
+}
