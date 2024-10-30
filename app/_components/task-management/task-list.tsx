@@ -135,14 +135,20 @@ function TaskList() {
           </Button>
         </Group>
       </form>
-
       <Stack mt="md">
         {tasks.map((task: Task) => (
           <TaskItem
             key={task.id}
             task={task}
-            onToggle={toggleTask}
-            onDelete={deleteTask}
+            onToggle={() =>
+              toggleMutation.mutate({
+                id: task.id,
+                completed: !task.completed,
+              })
+            }
+            onDelete={() => deleteMutation.mutate(task.id)}
+            isToggling={togglingIds.includes(task.id)}
+            isDeleting={deletingIds.includes(task.id)}
           />
         ))}
       </Stack>
