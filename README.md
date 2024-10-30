@@ -6,7 +6,7 @@
 - [x] API integration
 - [x] CRUD
 - [x] Filter tasks in RSC belonging to 1 user
-- [ ] Testing
+- [x] Testing
 - [x] Authentication
 - [x] Reusable component: TaskItem
 - [x] Reusable component: TaskList
