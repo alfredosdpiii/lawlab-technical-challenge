@@ -1,15 +1,16 @@
 import "@mantine/core/styles.css";
-import React from "react";
+import React, { ReactNode } from "react";
 import { MantineProvider, ColorSchemeScript } from "@mantine/core";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import Navbar from "@/components/nav/navbar";
+import Providers from "@/providers/query-provider";
 
 export const metadata = {
   title: "Lawlab Technical Challenge",
   description: "Lawlab Technical Challenge - by Alfredo",
 };
 
-export default function RootLayout({ children }: { children: any }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -24,7 +25,7 @@ export default function RootLayout({ children }: { children: any }) {
         <body>
           <MantineProvider defaultColorScheme="auto">
             <Navbar />
-            {children}
+            <Providers>{children}</Providers>
           </MantineProvider>
         </body>
       </UserProvider>
