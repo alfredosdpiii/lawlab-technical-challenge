@@ -64,3 +64,7 @@ yarn run dev
 - Creating the Chat ui for `helpdesk` page
 - I fed it mantine ui documentation and ask it regularly for help
 - jest config
+
+## Tests
+
+- to run tests use `yarn test`
