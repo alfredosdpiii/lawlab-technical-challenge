@@ -3,5 +3,7 @@ export default async function getTasks() {
 
   const json = await response.json();
 
-  return json;
+  const userTasks = json.filter((task: any) => task.userId === 1);
+
+  return userTasks;
 }
