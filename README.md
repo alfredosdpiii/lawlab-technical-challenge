@@ -52,6 +52,7 @@ yarn run dev
 - you can say "get tasks" and it will get tasks from server action
 - you can say "create task taskName" and it will create the task for you through server actions
 - you can say "update task taskName" and it will update the task for you through server actions
+  \*\*\* if the api was real and accepts POST, PUT, PATCH, DELETE, the toolCalling would work
 
 ## Assumptions
 
