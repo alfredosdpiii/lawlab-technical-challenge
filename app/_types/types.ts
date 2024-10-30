@@ -7,8 +7,10 @@ export interface Task {
 
 export interface TaskItemProps {
   task: Task;
-  onToggle: (id: number) => void;
-  onDelete: (id: number) => void;
+  onToggle: (taskId: number) => void;
+  onDelete: (taskId: number) => void;
+  isToggling?: boolean;
+  isDeleting?: boolean;
 }
 
 export type TaskListProps = Task[];
