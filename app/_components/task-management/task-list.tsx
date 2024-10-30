@@ -11,6 +11,11 @@ import {
   deleteTask,
 } from "@/actions/task-actions";
 
+interface ToggleVariables {
+  id: number;
+  completed: boolean;
+}
+
 function TaskList() {
   const queryClient = useQueryClient();
   const [newTask, setNewTask] = useState("");
