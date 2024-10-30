@@ -15,6 +15,9 @@ export async function POST(req: Request) {
 
   const result = await streamText({
     model: openai("gpt-3.5-turbo"),
+    system: `You are a helpful task management assistant.
+You can help users manage their tasks using the available tools.
+Use appropriate tools based on user requests.`,
     messages,
     maxSteps: 4,
     tools: {
