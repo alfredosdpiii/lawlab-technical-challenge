@@ -1,4 +1,4 @@
-import { getTasks } from "@/actions/task-actions";
+// import { getTasks } from "@/actions/task-actions";
 import TaskList from "@/components/task-management/task-list";
 import React from "react";
 import {
@@ -9,10 +9,14 @@ import {
 
 async function Tasks() {
   const queryClient = new QueryClient();
-  await queryClient.prefetchQuery({
-    queryKey: ["tasks"],
-    queryFn: async () => await getTasks(),
-  });
+  // uncommenting this will cause the getTasks to hydrate again
+  // causing the tasks to go back to original state because
+  // json placeholder cannot do crud
+  // but this is how I would prefetch
+  // await queryClient.prefetchQuery({
+  //   queryKey: ["tasks"],
+  //   queryFn: () => getTasks(),
+  // });
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <TaskList />
