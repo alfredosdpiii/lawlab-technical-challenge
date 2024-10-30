@@ -1,18 +1,18 @@
 # Lawlab Technical Challenge
 
 ## Requirements:
-- [ ] Next.js ( App Router ) with TS
-- [ ] Mantine UI
-- [ ] API integration
-- [ ] CRUD
-- [ ] Filter tasks in RSC belonging to 1 user
+- [x] Next.js ( App Router ) with TS
+- [x] Mantine UI
+- [x] API integration
+- [x] CRUD
+- [x] Filter tasks in RSC belonging to 1 user
 - [ ] Testing
-- [ ] Authentication
-- [ ] Reusable component: TaskItem
-- [ ] Reusable component: TaskList
-- [ ] use git & private repo
-- [ ] make readme
-- [ ] ai integration
+- [x] Authentication
+- [x] Reusable component: TaskItem
+- [x] Reusable component: TaskList
+- [x] use git & private repo
+- [x] make readme
+- [x] ai integration
 
 ## Personal goals:
 - I definitely want to overengineer this and use react-query to show optimistic updates
