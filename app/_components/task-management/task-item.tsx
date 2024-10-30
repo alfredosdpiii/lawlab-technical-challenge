@@ -28,6 +28,7 @@ export const TaskItem = ({
           style={{
             textDecoration: task.completed ? "line-through" : "none",
             color: task.completed ? "gray" : "inherit",
+            wordBreak: "break-word",
           }}
         >
           {task.title}
