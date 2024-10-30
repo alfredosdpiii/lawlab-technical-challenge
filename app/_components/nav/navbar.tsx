@@ -17,6 +17,7 @@ import classes from "@/components/nav/navbar.module.css";
 import Link from "next/link";
 import { LogIn } from "lucide-react";
 import { UserProfile, useUser } from "@auth0/nextjs-auth0/client";
+import { ScrollText } from "lucide-react";
 
 const tabs = [
   "Home",
@@ -49,9 +50,9 @@ export default function Navbar() {
     <div className={classes.header}>
       <Container className={classes.mainSection} size="md">
         <Group justify="space-between">
-          {/* <MantineLogo size={28} /> */}
 
           <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
+            <ScrollText size={28} />
 
           {user ? (
             <Menu
