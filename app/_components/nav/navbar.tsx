@@ -19,6 +19,7 @@ import classes from "@/components/nav/navbar.module.css";
 import Link from "next/link";
 import { LogIn, ScrollText } from "lucide-react";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { usePathname } from "next/navigation";
 
 const tabs = [
   "Home",
@@ -35,10 +36,21 @@ export default function Navbar() {
   const [opened, { toggle, close }] = useDisclosure(false);
   const [userMenuOpened, setUserMenuOpened] = useState(false);
   const { user, isLoading } = useUser();
+  const pathname = usePathname();
+
+  const getActiveTab = () => {
+    const path = pathname.substring(1);
+    const matchingTab = tabs.find(
+      (tab) => tab.toLowerCase() === path.toLowerCase(),
+    );
+    return matchingTab || "Home";
+  };
 
   const items = tabs.map((tab) => (
     <Link href={`/${tab.toLowerCase()}`} key={tab} onClick={close}>
-      <Tabs.Tab value={tab}>{tab}</Tabs.Tab>
+      <Tabs.Tab value={tab} component="div">
+        {tab}
+      </Tabs.Tab>
     </Link>
   ));
 
@@ -46,7 +58,9 @@ export default function Navbar() {
     <Link
       href={`/${tab.toLowerCase()}`}
       key={tab}
-      className={classes.mobileLink}
+      className={cx(classes.mobileLink, {
+        [classes.mobileLinkActive]: `/${tab.toLowerCase()}` === pathname,
+      })}
       onClick={close}
     >
       {tab}
@@ -129,7 +143,7 @@ export default function Navbar() {
         </Container>
         <Container size="md">
           <Tabs
-            defaultValue="Home"
+            value={getActiveTab()}
             variant="outline"
             visibleFrom="sm"
             classNames={{
